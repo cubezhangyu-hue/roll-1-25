@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Roll 1–25</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    body { margin:0; display:grid; place-items:center; height:100vh; background:#0b0f14; color:#fff; font-family:sans-serif; user-select:none; }
+    #num { font-size:20vmin; font-weight:bold; }
+    button { margin-top:20px; font-size:5vmin; padding:0.5em 1em; border:none; border-radius:0.5em; background:#2563eb; color:white; }
+    .history { margin-top:20px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+    .chip { background:#333; padding:4px 8px; border-radius:12px; }
+  </style>
+</head>
+<body>
+  <div id="num">—</div>
+  <button id="rollBtn">掷一下</button>
+  <div class="history" id="history"></div>
+<script>
+function randomIntInclusive(min, max) {
+  min = Math.ceil(min); max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+const MIN=1, MAX=25;
+const numEl=document.getElementById('num');
+const histEl=document.getElementById('history');
+const btn=document.getElementById('rollBtn');
+let history=[];
+function updateHistory(n){ history.unshift(n); history=history.slice(0,10); histEl.innerHTML=history.map(x=>`<span class="chip">${x}</span>`).join(''); }
+function roll(){ const n=randomIntInclusive(MIN,MAX); numEl.textContent=n; updateHistory(n); }
+btn.addEventListener('click', roll);
+document.body.addEventListener('click', e=>{ if(e.target!==btn) roll(); });
+</script>
+</body>
+</html>
